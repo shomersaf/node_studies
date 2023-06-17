@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/head.ejs') %>
+<body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+        <h2>Add post</h2>
+        <form method="post"  action="/add-post" class="addPost">
+            <div class="addPostHeader">
+                <div><h3>Author:</h3> <input type="text" name="author"></div>
+                <div><h3>Title:</h3> <input type="text" name="title"></div>     
+            </div>
+         <div class="postMain">
+            <h3>Text:</h3><textarea name="text"></textarea>
+            <button>Publish</button>
+         </div>
+   
+        </form>
+    </main>
+    
+</body>
+</html>

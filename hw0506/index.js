@@ -40,28 +40,21 @@ app.listen(4000, () => {
   console.log("Server is listening");
 });
 
-app.get("/log-file", (request, response) => { 
-  let fileContent = fs.readFileSync("./log.txt", "utf8");
-  return response.status(200).send(fileContent)
-})
-
-
 app.use((request, response, next) => {
   const { text } = request.query;
   if (text && text.length <= 20) {
       return next()
-  } else {
+  } else if(text){
       response.json({ message: "Rejected! The text must not contain more than 20 characters!" })
+  }else{
+    next()
   }
 })
 
-
 app.get("/log", (request, response) => {
   const { text } = request.query;
-
   if (text) {
     response.status(200).send(`&quot;${text}&quot; is appended to file.`);
-
     appendIntoFile(text);
   } else {
     console.log(err);
@@ -69,7 +62,10 @@ app.get("/log", (request, response) => {
   }
 });
 
-
+app.get("/log-file", (request, response) => { 
+  let fileContent = fs.readFileSync("./log.txt", "utf8");
+  return response.status(200).send(fileContent)
+})
 
 async function appendIntoFile(someData) {
  
@@ -82,3 +78,10 @@ async function appendIntoFile(someData) {
     }
   });
 }
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  res
+  .status(500)
+  .send('Something went wrong...')
+ })
